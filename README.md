@@ -10,3 +10,10 @@ A webapp that wraps the github API.
 Current version: 0.1.0
 
 Deployed to [Github](http://github.datastore.trevorism.com)
+
+Uses a personal access token to authenticate. Create a property in secrets.properties
+```properties
+clientId=...
+clientSecret=...
+accessToken=<personal access token>
+```
