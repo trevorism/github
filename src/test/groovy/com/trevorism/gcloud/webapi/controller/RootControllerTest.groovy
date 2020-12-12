@@ -18,4 +18,10 @@ class RootControllerTest {
         RootController rootController = new RootController()
         assert rootController.ping() == "pong"
     }
+
+    @Test
+    void testRootControllerHelp(){
+        RootController rootController = new RootController()
+        assert rootController.help()
+    }
 }

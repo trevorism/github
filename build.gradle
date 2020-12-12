@@ -46,23 +46,32 @@ dependencies {
 
     implementation 'org.slf4j:slf4j-nop:1.7.30'
     implementation 'io.swagger:swagger-jersey2-jaxrs:1.6.2'
+    implementation 'com.trevorism:http-utils:1.1.0'
+    implementation 'com.trevorism:secure-utils:3.4.0'
 
-    implementation 'com.trevorism:secure-utils:3.3.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
 
     acceptanceImplementation 'io.cucumber:cucumber-groovy:4.7.1'
     acceptanceImplementation 'com.trevorism:http-utils:1.1.0'
 
-
     testImplementation 'junit:junit:4.13'
 }
 
+processResources{
+    doLast{
+        copy{
+            from "${System.getProperty("user.home")}/${project.name}/secrets.properties"
+            into "build/resources/main"
+        }
+    }
+}
 
 appengine {
     deploy {
         projectId = "trevorism-gcloud"
         stopPreviousVersion = true
         promote = true
-        version = "0-0-1"
+        version = "0-1-0"
     }
 }
 
