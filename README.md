@@ -5,11 +5,11 @@
 ![GitHub language count](https://img.shields.io/github/languages/count/trevorism/github)
 ![GitHub top language](https://img.shields.io/github/languages/top/trevorism/github)
 
-A webapp that wraps the github API.
+A webapp that wraps the github API. This helps with automated creation and management of github repos
 
-Current version: 0.1.0
+Current version: 0.2.0
 
-Deployed to [Github](http://github.datastore.trevorism.com)
+Deployed to [Github](http://github.project.trevorism.com)
 
 Uses a personal access token to authenticate. Create a property in secrets.properties
 ```properties
