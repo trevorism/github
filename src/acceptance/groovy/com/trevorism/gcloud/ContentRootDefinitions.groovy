@@ -12,11 +12,11 @@ def pingContent
 
 Given(~/^the application is alive$/) { ->
     try{
-        new URL("https://github-dot-trevorism-gcloud.appspot.com/ping").text
+        new URL("https://github.project.trevorism.com/ping").text
     }
     catch (Exception ignored){
         Thread.sleep(10000)
-        new URL("https://github-dot-trevorism-gcloud.appspot.com/ping").text
+        new URL("https://github.project.trevorism.com/ping").text
     }
 }
 
