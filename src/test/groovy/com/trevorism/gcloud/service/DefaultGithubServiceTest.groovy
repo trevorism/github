@@ -6,7 +6,6 @@ import com.trevorism.http.headers.HeadersHttpClient
 import org.apache.http.HttpEntity
 import org.apache.http.StatusLine
 import org.apache.http.client.methods.CloseableHttpResponse
-import org.junit.Before
 import org.junit.Test
 
 class DefaultGithubServiceTest {

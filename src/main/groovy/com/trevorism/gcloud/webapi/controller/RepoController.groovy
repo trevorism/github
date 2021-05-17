@@ -5,6 +5,7 @@ import com.trevorism.gcloud.service.DefaultGithubService
 import com.trevorism.gcloud.service.GithubService
 import com.trevorism.secure.Roles
 import com.trevorism.secure.Secure
+import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 
 import javax.ws.rs.Consumes
@@ -16,6 +17,7 @@ import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
 import javax.ws.rs.core.MediaType
 
+@Api("Repo Operations")
 @Path("repo")
 class RepoController {
 
