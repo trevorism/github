@@ -13,3 +13,7 @@ Rotated API key.
 # 0.2.2
 
 Rotated API and Secret keys.
+
+# 0.2.3
+
+Rotated API key.
