@@ -3,6 +3,7 @@ package com.trevorism.gcloud.service
 import com.google.gson.Gson
 import com.trevorism.gcloud.model.Repository
 import com.trevorism.http.headers.HeadersHttpClient
+import com.trevorism.secure.PropertiesProvider
 import org.apache.http.HttpEntity
 import org.apache.http.StatusLine
 import org.apache.http.client.methods.CloseableHttpResponse
@@ -17,6 +18,7 @@ class DefaultGithubServiceTest {
     void testListRepos() {
         String json = gson.toJson([new Repository(name: "zzUnitTest", notPublic: false)])
         githubService.httpClient = [get: { url, headers -> createCloseableHttpResponse(json) }] as HeadersHttpClient
+        githubService.propertiesProvider = [getProperty: {x -> ""}] as PropertiesProvider
         def result = githubService.listRepos()
         assert result
         assert result[0]
@@ -27,6 +29,7 @@ class DefaultGithubServiceTest {
     void testGetRepo() {
         String json = gson.toJson(new Repository(name: "zzUnitTest", notPublic: false))
         githubService.httpClient = [get: { url, headers -> createCloseableHttpResponse(json) }] as HeadersHttpClient
+        githubService.propertiesProvider = [getProperty: {x -> ""}] as PropertiesProvider
         def result = githubService.getRepo("zzUnitTest")
         assert result
         assert result.name == "zzUnitTest"
@@ -37,6 +40,7 @@ class DefaultGithubServiceTest {
         Repository repository = new Repository(name: "zzUnitTest", notPublic: false)
         String json = gson.toJson(repository)
         githubService.httpClient = [post: { url, body, headers -> createCloseableHttpResponse(json) }] as HeadersHttpClient
+        githubService.propertiesProvider = [getProperty: {x -> ""}] as PropertiesProvider
         def result = githubService.createRepo(repository)
         assert result
         assert result.name == "zzUnitTest"
@@ -45,6 +49,7 @@ class DefaultGithubServiceTest {
     @Test
     void testDeleteRepo() {
         githubService.httpClient = [delete: { url, headers -> createCloseableHttpResponse("", 204) }] as HeadersHttpClient
+        githubService.propertiesProvider = [getProperty: {x -> ""}] as PropertiesProvider
         assert githubService.deleteRepo("zzUnitTest")
     }
 
