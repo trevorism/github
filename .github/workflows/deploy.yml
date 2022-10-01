@@ -49,6 +49,8 @@ jobs:
             Add-Content -Path .\build\staged-app\WEB-INF\classes\secrets.properties -Value 'signingKey=${{ secrets.SIGNING_KEY }}'
             Add-Content -Path .\build\staged-app\WEB-INF\classes\secrets.properties -Value 'accessToken=${{ secrets.ACCESS_TOKEN }}'
             Add-Content -Path .\src\acceptance\resources\secrets.properties -Value 'accessToken=${{ secrets.ACCESS_TOKEN }}'
+            Add-Content -Path .\src\acceptance\resources\secrets.properties -Value 'clientId=${{ secrets.CLIENT_ID }}'
+            Add-Content -Path .\src\acceptance\resources\secrets.properties -Value 'clientSecret=${{ secrets.CLIENT_SECRET }}'
 
       - name: 'Deploy to App Engine'
         uses: 'google-github-actions/deploy-appengine@v0.8.0'
