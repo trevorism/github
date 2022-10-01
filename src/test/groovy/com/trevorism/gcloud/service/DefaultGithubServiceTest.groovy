@@ -46,7 +46,6 @@ class DefaultGithubServiceTest {
     void testDeleteRepo() {
         githubService.httpClient = [delete: { url, headers -> createCloseableHttpResponse("", 204) }] as HeadersHttpClient
         assert githubService.deleteRepo("zzUnitTest")
-
     }
 
     private static CloseableHttpResponse createCloseableHttpResponse(String responseString, int statusCode = 200) {
