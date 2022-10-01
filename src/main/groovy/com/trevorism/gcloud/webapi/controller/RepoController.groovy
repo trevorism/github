@@ -85,7 +85,7 @@ class RepoController {
     @ApiOperation(value = "Git latest release")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{name}")
+    @Path("{name}/release")
     String getLatestRelease(@PathParam("name") String name) {
         githubService.getLatestRelease(name)
     }
