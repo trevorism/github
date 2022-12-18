@@ -5,10 +5,10 @@ class GithubWorkflowRequest {
     Inputs inputs
     String ref
 
-    GithubWorkflowRequest(String branchName, boolean testType){
+    GithubWorkflowRequest(String branchName, boolean unitTests){
         ref = branchName
         inputs = new Inputs()
-        inputs.TEST_TYPE = testType ? "acceptance" : "unit"
+        inputs.TEST_TYPE = unitTests ? "unit" : "acceptance"
     }
 
     class Inputs {
