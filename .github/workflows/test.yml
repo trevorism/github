@@ -17,3 +17,7 @@ jobs:
   call-accept:
     if: ${{inputs.TEST_TYPE == 'acceptance'}}
     uses: trevorism/actions-workflows/.github/workflows/accept.yml@master
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
