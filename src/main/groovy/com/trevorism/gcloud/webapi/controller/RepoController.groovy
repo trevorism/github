@@ -76,7 +76,6 @@ class RepoController {
     @ApiOperation(value = "Create or update a secret **Secure")
     @Secure(Roles.SYSTEM)
     @PUT
-    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("{name}/secret")
     void runlastGithubAction(@PathParam("name") String name, SecretRequest request) {
@@ -94,7 +93,6 @@ class RepoController {
     @ApiOperation(value = "Invoke github workflow **Secure")
     @POST
     @Secure(Roles.SYSTEM)
-    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("{name}/workflow")
     void invokeWorkflow(@PathParam("name") String name, WorkflowRequest request) {
