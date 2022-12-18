@@ -2,6 +2,7 @@ package com.trevorism.gcloud.webapi.controller
 
 import com.trevorism.gcloud.model.Repository
 import com.trevorism.gcloud.model.SecretRequest
+import com.trevorism.gcloud.model.WorkflowRequest
 import com.trevorism.gcloud.service.DefaultGithubService
 import com.trevorism.gcloud.service.GithubService
 import com.trevorism.secure.Roles
@@ -88,5 +89,14 @@ class RepoController {
     @Path("{name}/release")
     String getLatestRelease(@PathParam("name") String name) {
         githubService.getLatestRelease(name)
+    }
+
+    @ApiOperation(value = "Invoke github workflow **Secure")
+    @POST
+    @Secure(Roles.SYSTEM)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    void invokeWorkflow(WorkflowRequest request) {
+        githubService.invokeWorkflow(request)
     }
 }

@@ -1,7 +1,9 @@
 package com.trevorism.gcloud.service
 
 import com.google.gson.Gson
+import com.trevorism.gcloud.model.GithubWorkflowRequest
 import com.trevorism.gcloud.model.Repository
+import com.trevorism.gcloud.model.WorkflowRequest
 import com.trevorism.http.headers.HeadersHttpClient
 import com.trevorism.secure.PropertiesProvider
 import org.apache.http.HttpEntity
@@ -51,6 +53,13 @@ class DefaultGithubServiceTest {
         githubService.httpClient = [delete: { url, headers -> createCloseableHttpResponse("", 204) }] as HeadersHttpClient
         githubService.propertiesProvider = [getProperty: {x -> ""}] as PropertiesProvider
         assert githubService.deleteRepo("zzUnitTest")
+    }
+
+    @Test
+    void testInvokeWorkflow(){
+        githubService.httpClient = [post: { url, body, headers -> createCloseableHttpResponse("", 204) }] as HeadersHttpClient
+        githubService.invokeWorkflow(new WorkflowRequest(repoName: "homepage", unitTest: false))
+        assert true
     }
 
     private static CloseableHttpResponse createCloseableHttpResponse(String responseString, int statusCode = 200) {

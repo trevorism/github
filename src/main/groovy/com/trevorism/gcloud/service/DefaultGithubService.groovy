@@ -6,7 +6,9 @@ import com.goterl.lazysodium.LazySodiumJava
 import com.goterl.lazysodium.SodiumJava
 import com.goterl.lazysodium.utils.Key
 import com.trevorism.gcloud.model.EncryptedSecret
+import com.trevorism.gcloud.model.GithubWorkflowRequest
 import com.trevorism.gcloud.model.Repository
+import com.trevorism.gcloud.model.WorkflowRequest
 import com.trevorism.http.headers.HeadersHttpClient
 import com.trevorism.http.headers.HeadersJsonHttpClient
 import com.trevorism.http.util.ResponseUtils
@@ -97,6 +99,13 @@ class DefaultGithubService implements GithubService {
         if (!responseObject.containsKey("name"))
             return null
         return responseObject["name"]
+    }
+
+    @Override
+    void invokeWorkflow(WorkflowRequest request) {
+        String json = gson.toJson(new GithubWorkflowRequest(request.branchName, request.unitTest))
+        CloseableHttpResponse response = httpClient.post("${BASE_GITHUB_URL}/repos/trevorism/${request.repoName}/actions/workflows/test.yml/dispatches", json, createAuthHeader())
+        ResponseUtils.closeSilently(response)
     }
 
     private def createAuthHeader() {
