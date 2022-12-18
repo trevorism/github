@@ -65,10 +65,12 @@ class RepoController {
     @ApiOperation(value = "Invoke github workflow **Secure")
     @POST
     @Secure(Roles.SYSTEM)
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("{name}/workflow")
-    void invokeWorkflow(@PathParam("name") String name, WorkflowRequest request) {
+    WorkflowRequest invokeWorkflow(@PathParam("name") String name, WorkflowRequest request) {
         githubService.invokeWorkflow(name, request)
+        return request
     }
 
     @ApiOperation(value = "Rerun the last github action **Secure")
@@ -84,10 +86,12 @@ class RepoController {
     @ApiOperation(value = "Create or update a secret **Secure")
     @Secure(Roles.SYSTEM)
     @PUT
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("{name}/secret")
-    void setGithubSecret(@PathParam("name") String name, SecretRequest request) {
+    String setGithubSecret(@PathParam("name") String name, SecretRequest request) {
         githubService.setGithubSecret(name, request.secretName, request.secretValue)
+        return name
     }
 
     @ApiOperation(value = "Get latest release for the current repo")
