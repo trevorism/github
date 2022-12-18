@@ -103,8 +103,8 @@ class DefaultGithubService implements GithubService {
 
     @Override
     void invokeWorkflow(String repoName, WorkflowRequest request) {
-        String json = gson.toJson(new GithubWorkflowRequest(request.branchName, request.unitTest))
-        CloseableHttpResponse response = httpClient.post("${BASE_GITHUB_URL}/repos/trevorism/${repoName}/actions/workflows/test.yml/dispatches", json, createAuthHeader())
+        String json = gson.toJson(new GithubWorkflowRequest(request.yamlName, request.branchName, request.unitTest))
+        CloseableHttpResponse response = httpClient.post("${BASE_GITHUB_URL}/repos/trevorism/${repoName}/actions/workflows/${request.yamlName}/dispatches", json, createAuthHeader())
         ResponseUtils.closeSilently(response)
     }
 

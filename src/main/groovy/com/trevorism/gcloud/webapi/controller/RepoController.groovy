@@ -62,6 +62,14 @@ class RepoController {
         githubService.deleteRepo(name)
     }
 
+    @ApiOperation(value = "Invoke github workflow **Secure")
+    @POST
+    @Secure(Roles.SYSTEM)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("{name}/workflow")
+    void invokeWorkflow(@PathParam("name") String name, WorkflowRequest request) {
+        githubService.invokeWorkflow(name, request)
+    }
 
     @ApiOperation(value = "Rerun the last github action **Secure")
     @Secure(Roles.SYSTEM)
@@ -78,11 +86,11 @@ class RepoController {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("{name}/secret")
-    void runlastGithubAction(@PathParam("name") String name, SecretRequest request) {
+    void setGithubSecret(@PathParam("name") String name, SecretRequest request) {
         githubService.setGithubSecret(name, request.secretName, request.secretValue)
     }
 
-    @ApiOperation(value = "Git latest release")
+    @ApiOperation(value = "Get latest release for the current repo")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{name}/release")
@@ -90,12 +98,4 @@ class RepoController {
         githubService.getLatestRelease(name)
     }
 
-    @ApiOperation(value = "Invoke github workflow **Secure")
-    @POST
-    @Secure(Roles.SYSTEM)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("{name}/workflow")
-    void invokeWorkflow(@PathParam("name") String name, WorkflowRequest request) {
-        githubService.invokeWorkflow(name, request)
-    }
 }
