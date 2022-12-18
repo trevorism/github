@@ -96,7 +96,8 @@ class RepoController {
     @Secure(Roles.SYSTEM)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    void invokeWorkflow(WorkflowRequest request) {
-        githubService.invokeWorkflow(request)
+    @Path("{name}/workflow")
+    void invokeWorkflow(@PathParam("name") String name, WorkflowRequest request) {
+        githubService.invokeWorkflow(name, request)
     }
 }

@@ -59,7 +59,7 @@ class DefaultGithubServiceTest {
     void testInvokeWorkflow(){
         githubService.httpClient = [post: { url, body, headers -> createCloseableHttpResponse("", 204) }] as HeadersHttpClient
         githubService.propertiesProvider = [getProperty: {x -> ""}] as PropertiesProvider
-        githubService.invokeWorkflow(new WorkflowRequest(repoName: "homepage", unitTest: false))
+        githubService.invokeWorkflow("test", new WorkflowRequest(unitTest: true))
         assert true
     }
 
