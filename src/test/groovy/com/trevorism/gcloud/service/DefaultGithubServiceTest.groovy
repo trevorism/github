@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.trevorism.gcloud.model.GithubWorkflowRequest
 import com.trevorism.gcloud.model.Repository
 import com.trevorism.gcloud.model.WorkflowRequest
+import com.trevorism.gcloud.model.WorkflowStatus
 import com.trevorism.http.headers.HeadersHttpClient
 import com.trevorism.secure.PropertiesProvider
 import org.apache.http.HttpEntity
@@ -61,6 +62,20 @@ class DefaultGithubServiceTest {
         githubService.propertiesProvider = [getProperty: {x -> ""}] as PropertiesProvider
         githubService.invokeWorkflow("test", new WorkflowRequest(unitTest: true))
         assert true
+    }
+
+    @Test
+    void testGetWorkflowStatus(){
+        String json = gson.toJson(["workflow_runs": [[id:123,workflow_id:234,event:"push",status:"queued",conclusion:"success"]]])
+        githubService.httpClient = [get: { url, headers -> createCloseableHttpResponse(json) }] as HeadersHttpClient
+        githubService.propertiesProvider = [getProperty: {x -> ""}] as PropertiesProvider
+
+        def workflowStatus = githubService.getWorkflowStatus("testing", new WorkflowRequest(yamlName: "test.yml"))
+        assert workflowStatus.runId == 123
+        assert workflowStatus.workflowId == 234
+        assert workflowStatus.event == "push"
+        assert workflowStatus.state == "queued"
+        assert workflowStatus.result == "success"
     }
 
     private static CloseableHttpResponse createCloseableHttpResponse(String responseString, int statusCode = 200) {

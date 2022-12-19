@@ -1,3 +1,7 @@
+# 0.4.0
+
+Invoke github actions and view their status via the API
+
 # 0.3.0
 
 Move to github actions. Add ability to invoke actions, 

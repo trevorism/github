@@ -9,6 +9,7 @@ import com.trevorism.gcloud.model.EncryptedSecret
 import com.trevorism.gcloud.model.GithubWorkflowRequest
 import com.trevorism.gcloud.model.Repository
 import com.trevorism.gcloud.model.WorkflowRequest
+import com.trevorism.gcloud.model.WorkflowStatus
 import com.trevorism.http.headers.HeadersHttpClient
 import com.trevorism.http.headers.HeadersJsonHttpClient
 import com.trevorism.http.util.ResponseUtils
@@ -106,6 +107,20 @@ class DefaultGithubService implements GithubService {
         String json = gson.toJson(new GithubWorkflowRequest(request.yamlName, request.branchName, request.unitTest))
         CloseableHttpResponse response = httpClient.post("${BASE_GITHUB_URL}/repos/trevorism/${repoName}/actions/workflows/${request.yamlName}/dispatches", json, createAuthHeader())
         ResponseUtils.closeSilently(response)
+    }
+
+    @Override
+    WorkflowStatus getWorkflowStatus(String repositoryName, WorkflowRequest workflowRequest) {
+        CloseableHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}/actions/workflows/${workflowRequest.yamlName}/runs", createAuthHeader())
+        String responseJson = ResponseUtils.getEntity(response)
+        def responseObject = new JsonSlurper().parseText(responseJson)
+        def sortedRuns = responseObject["workflow_runs"].sort {
+            it["created_at"]
+        }
+        def latestRun = sortedRuns.last()
+
+        return new WorkflowStatus(workflowId: latestRun["workflow_id"], runId: latestRun["id"], state: latestRun["status"],
+                result: latestRun["conclusion"], event: latestRun["event"], createdAt: latestRun["created_at"], updatedAt: latestRun["updated_at"])
     }
 
     private def createAuthHeader() {

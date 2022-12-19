@@ -3,6 +3,7 @@ package com.trevorism.gcloud.webapi.controller
 import com.trevorism.gcloud.model.Repository
 import com.trevorism.gcloud.model.SecretRequest
 import com.trevorism.gcloud.model.WorkflowRequest
+import com.trevorism.gcloud.model.WorkflowStatus
 import com.trevorism.gcloud.service.DefaultGithubService
 import com.trevorism.gcloud.service.GithubService
 import com.trevorism.secure.Roles
@@ -71,6 +72,15 @@ class RepoController {
     WorkflowRequest invokeWorkflow(@PathParam("name") String name, WorkflowRequest request) {
         githubService.invokeWorkflow(name, request)
         return request
+    }
+
+    @ApiOperation(value = "Get github workflow status **Secure")
+    @GET
+    @Secure(Roles.SYSTEM)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{name}/workflow")
+    WorkflowStatus getWorkflowStatus(@PathParam("name") String name, WorkflowRequest request) {
+        githubService.getWorkflowStatus(name, request)
     }
 
     @ApiOperation(value = "Rerun the last github action **Secure")
