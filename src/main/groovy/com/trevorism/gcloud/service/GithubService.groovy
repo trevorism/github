@@ -16,5 +16,5 @@ interface GithubService {
     void setGithubSecret(String repositoryName, String secretName, String secretValue)
     void invokeWorkflow(String repositoryName, WorkflowRequest request)
 
-    WorkflowStatus getWorkflowStatus(String repositoryName, WorkflowRequest workflowRequest)
+    WorkflowStatus getWorkflowStatus(String repositoryName, String yamlName)
 }

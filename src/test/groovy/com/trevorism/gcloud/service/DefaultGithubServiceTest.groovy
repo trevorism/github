@@ -70,7 +70,7 @@ class DefaultGithubServiceTest {
         githubService.httpClient = [get: { url, headers -> createCloseableHttpResponse(json) }] as HeadersHttpClient
         githubService.propertiesProvider = [getProperty: {x -> ""}] as PropertiesProvider
 
-        def workflowStatus = githubService.getWorkflowStatus("testing", new WorkflowRequest(yamlName: "test.yml"))
+        def workflowStatus = githubService.getWorkflowStatus("testing", "test.yml")
         assert workflowStatus.runId == 123
         assert workflowStatus.workflowId == 234
         assert workflowStatus.event == "push"

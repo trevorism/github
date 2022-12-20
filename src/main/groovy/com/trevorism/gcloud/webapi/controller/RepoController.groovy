@@ -78,9 +78,9 @@ class RepoController {
     @GET
     @Secure(Roles.SYSTEM)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{name}/workflow")
-    WorkflowStatus getWorkflowStatus(@PathParam("name") String name, WorkflowRequest request) {
-        githubService.getWorkflowStatus(name, request)
+    @Path("{name}/workflow/{yaml}")
+    WorkflowStatus getWorkflowStatus(@PathParam("name") String name, @PathParam("yaml") String yaml) {
+        githubService.getWorkflowStatus(name, yaml)
     }
 
     @ApiOperation(value = "Rerun the last github action **Secure")

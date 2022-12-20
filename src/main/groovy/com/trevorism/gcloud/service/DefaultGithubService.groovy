@@ -110,8 +110,8 @@ class DefaultGithubService implements GithubService {
     }
 
     @Override
-    WorkflowStatus getWorkflowStatus(String repositoryName, WorkflowRequest workflowRequest) {
-        CloseableHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}/actions/workflows/${workflowRequest.yamlName}/runs", createAuthHeader())
+    WorkflowStatus getWorkflowStatus(String repositoryName, String yamlName) {
+        CloseableHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}/actions/workflows/${yamlName}/runs", createAuthHeader())
         String responseJson = ResponseUtils.getEntity(response)
         def responseObject = new JsonSlurper().parseText(responseJson)
         def sortedRuns = responseObject["workflow_runs"].sort {
