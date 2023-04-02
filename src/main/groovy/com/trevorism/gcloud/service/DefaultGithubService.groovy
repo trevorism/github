@@ -5,18 +5,17 @@ import com.google.gson.reflect.TypeToken
 import com.goterl.lazysodium.LazySodiumJava
 import com.goterl.lazysodium.SodiumJava
 import com.goterl.lazysodium.utils.Key
+import com.trevorism.ClasspathBasedPropertiesProvider
+import com.trevorism.PropertiesProvider
 import com.trevorism.gcloud.model.EncryptedSecret
 import com.trevorism.gcloud.model.GithubWorkflowRequest
 import com.trevorism.gcloud.model.Repository
 import com.trevorism.gcloud.model.WorkflowRequest
 import com.trevorism.gcloud.model.WorkflowStatus
-import com.trevorism.http.headers.HeadersHttpClient
-import com.trevorism.http.headers.HeadersJsonHttpClient
-import com.trevorism.http.util.ResponseUtils
-import com.trevorism.secure.ClasspathBasedPropertiesProvider
-import com.trevorism.secure.PropertiesProvider
+import com.trevorism.http.HeadersHttpResponse
+import com.trevorism.http.HttpClient
+import com.trevorism.http.JsonHttpClient
 import groovy.json.JsonSlurper
-import org.apache.http.client.methods.CloseableHttpResponse
 
 import java.lang.reflect.Type
 import java.nio.charset.StandardCharsets
@@ -24,14 +23,14 @@ import java.nio.charset.StandardCharsets
 class DefaultGithubService implements GithubService {
 
     private static final String BASE_GITHUB_URL = "https://api.github.com"
-    private HeadersHttpClient httpClient = new HeadersJsonHttpClient()
+    private HttpClient httpClient = new JsonHttpClient()
     private Gson gson = new Gson()
     private PropertiesProvider propertiesProvider = new ClasspathBasedPropertiesProvider()
 
     @Override
     List<Repository> listRepos() {
-        CloseableHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/user/repos?per_page=100", createAuthHeader())
-        String json = ResponseUtils.getEntity(response)
+        HeadersHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/user/repos?per_page=100", createAuthHeader())
+        String json = response.value
         Type type = TypeToken.getParameterized(List.class, Repository).getType()
         gson.fromJson(json, type)
     }
@@ -39,28 +38,28 @@ class DefaultGithubService implements GithubService {
     @Override
     Repository createRepo(Repository repository) {
         String json = gson.toJson(repository)
-        CloseableHttpResponse response = httpClient.post("${BASE_GITHUB_URL}/user/repos", json, createAuthHeader())
-        String responseJson = ResponseUtils.getEntity(response)
+        HeadersHttpResponse response = httpClient.post("${BASE_GITHUB_URL}/user/repos", json, createAuthHeader())
+        String responseJson = response.value
         gson.fromJson(responseJson, Repository)
     }
 
     @Override
     Repository getRepo(String repositoryName) {
-        CloseableHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}", createAuthHeader())
-        String responseJson = ResponseUtils.getEntity(response)
+        HeadersHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}", createAuthHeader())
+        String responseJson = response.value
         gson.fromJson(responseJson, Repository)
     }
 
     @Override
     boolean deleteRepo(String repositoryName) {
-        CloseableHttpResponse response = httpClient.delete("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}", createAuthHeader())
-        response.getStatusLine().statusCode == 204
+        HeadersHttpResponse response = httpClient.delete("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}", createAuthHeader())
+        return true
     }
 
     @Override
     boolean rerunLastGithubAction(String repositoryName) {
-        CloseableHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}/actions/runs", createAuthHeader())
-        def responseObject = new JsonSlurper().parseText(ResponseUtils.getEntity(response))
+        HeadersHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}/actions/runs", createAuthHeader())
+        def responseObject = new JsonSlurper().parseText(response.value)
         def sortedRuns = responseObject["workflow_runs"].sort {
             it["created_at"]
         }
@@ -74,8 +73,8 @@ class DefaultGithubService implements GithubService {
 
     @Override
     void setGithubSecret(String repositoryName, String secretName, String secretValue) {
-        CloseableHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}/actions/secrets/public-key", createAuthHeader())
-        def responseObject = new JsonSlurper().parseText(ResponseUtils.getEntity(response))
+        HeadersHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}/actions/secrets/public-key", createAuthHeader())
+        def responseObject = new JsonSlurper().parseText(response.value)
         String keyId = responseObject["key_id"]
         String secretEncryptedBin = encryptSecret(secretValue, responseObject["key"])
 
@@ -94,8 +93,8 @@ class DefaultGithubService implements GithubService {
 
     @Override
     String getLatestRelease(String repositoryName) {
-        CloseableHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}/releases/latest", createAuthHeader())
-        String responseJson = ResponseUtils.getEntity(response)
+        HeadersHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}/releases/latest", createAuthHeader())
+        String responseJson = response.value
         def responseObject = new JsonSlurper().parseText(responseJson)
         if (!responseObject.containsKey("name"))
             return null
@@ -105,14 +104,13 @@ class DefaultGithubService implements GithubService {
     @Override
     void invokeWorkflow(String repoName, WorkflowRequest request) {
         String json = gson.toJson(new GithubWorkflowRequest(request.yamlName, request.branchName, request.unitTest))
-        CloseableHttpResponse response = httpClient.post("${BASE_GITHUB_URL}/repos/trevorism/${repoName}/actions/workflows/${request.yamlName}/dispatches", json, createAuthHeader())
-        ResponseUtils.closeSilently(response)
+        HeadersHttpResponse response = httpClient.post("${BASE_GITHUB_URL}/repos/trevorism/${repoName}/actions/workflows/${request.yamlName}/dispatches", json, createAuthHeader())
     }
 
     @Override
     WorkflowStatus getWorkflowStatus(String repositoryName, String yamlName) {
-        CloseableHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}/actions/workflows/${yamlName}/runs", createAuthHeader())
-        String responseJson = ResponseUtils.getEntity(response)
+        HeadersHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}/actions/workflows/${yamlName}/runs", createAuthHeader())
+        String responseJson = response.value
         def responseObject = new JsonSlurper().parseText(responseJson)
         def sortedRuns = responseObject["workflow_runs"].sort {
             it["created_at"]

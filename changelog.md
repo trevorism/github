@@ -1,4 +1,8 @@
-# 0.4.0
+# 0.5.0
+
+Migrate to micronaut, java 17 
+
+0.4.0
 
 Invoke github actions and view their status via the API
 

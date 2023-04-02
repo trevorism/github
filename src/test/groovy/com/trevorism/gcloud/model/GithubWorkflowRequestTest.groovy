@@ -1,7 +1,7 @@
 package com.trevorism.gcloud.model
 
 import com.google.gson.Gson
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class GithubWorkflowRequestTest {
 

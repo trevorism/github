@@ -8,107 +8,87 @@ import com.trevorism.gcloud.service.DefaultGithubService
 import com.trevorism.gcloud.service.GithubService
 import com.trevorism.secure.Roles
 import com.trevorism.secure.Secure
-import io.swagger.annotations.Api
-import io.swagger.annotations.ApiOperation
 
-import javax.ws.rs.Consumes
-import javax.ws.rs.DELETE
-import javax.ws.rs.GET
-import javax.ws.rs.POST
-import javax.ws.rs.PUT
-import javax.ws.rs.Path
-import javax.ws.rs.PathParam
-import javax.ws.rs.Produces
-import javax.ws.rs.core.MediaType
+import io.micronaut.http.MediaType
+import io.micronaut.http.annotation.*
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 
-@Api("Repo Operations")
-@Path("repo")
+@Controller("/repo")
 class RepoController {
 
     private GithubService githubService = new DefaultGithubService()
 
-    @ApiOperation(value = "Lists all repos **Secure")
+    @Tag(name = "Repo Operations")
+    @Operation(summary = "Lists all repos **Secure")
+    @Get(value = "/", produces = MediaType.APPLICATION_JSON)
     @Secure(Roles.USER)
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
     List<Repository> list() {
         githubService.listRepos()
     }
 
-    @ApiOperation(value = "Creates a new repo **Secure")
-    @POST
+    @Tag(name = "Repo Operations")
+    @Operation(summary = "Creates a new repo **Secure")
+    @Post(value = "/", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
     @Secure(Roles.SYSTEM)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    Repository createRepository(Repository repository) {
+    Repository createRepository(@Body Repository repository) {
         githubService.createRepo(repository)
     }
 
-    @ApiOperation(value = "Deletes a repository **Secure")
+    @Tag(name = "Repo Operations")
+    @Operation(summary = "Gets a repository **Secure")
+    @Get(value = "/{name}", produces = MediaType.APPLICATION_JSON)
     @Secure(Roles.USER)
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("{name}")
-    Repository getRepository(@PathParam("name") String name) {
+    Repository getRepository(String name) {
         githubService.getRepo(name)
     }
 
-    @ApiOperation(value = "Deletes a repository **Secure")
+    @Tag(name = "Repo Operations")
+    @Operation(summary = "Deletes a repository **Secure")
     @Secure(Roles.ADMIN)
-    @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("{name}")
-    boolean deleteRepository(@PathParam("name") String name) {
+    @Delete(value = "{name}", produces = MediaType.APPLICATION_JSON)
+    boolean deleteRepository(String name) {
         githubService.deleteRepo(name)
     }
 
-    @ApiOperation(value = "Invoke github workflow **Secure")
-    @POST
+    @Tag(name = "Repo Operations")
+    @Operation(summary = "Invoke github workflow **Secure")
+    @Post(value = "/{name}/workflow", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
     @Secure(Roles.SYSTEM)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("{name}/workflow")
-    WorkflowRequest invokeWorkflow(@PathParam("name") String name, WorkflowRequest request) {
+    WorkflowRequest invokeWorkflow(String name, @Body WorkflowRequest request) {
         githubService.invokeWorkflow(name, request)
         return request
     }
 
-    @ApiOperation(value = "Get github workflow status **Secure")
-    @GET
+    @Tag(name = "Repo Operations")
+    @Operation(summary = "Get github workflow status **Secure")
+    @Get(value = "/{name}/workflow/{yaml}", produces = MediaType.APPLICATION_JSON)
     @Secure(Roles.SYSTEM)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("{name}/workflow/{yaml}")
-    WorkflowStatus getWorkflowStatus(@PathParam("name") String name, @PathParam("yaml") String yaml) {
+    WorkflowStatus getWorkflowStatus(String name, String yaml) {
         githubService.getWorkflowStatus(name, yaml)
     }
 
-    @ApiOperation(value = "Rerun the last github action **Secure")
+    @Tag(name = "Repo Operations")
+    @Operation(summary = "Rerun the last github action **Secure")
+    @Put(value = "/{name}", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
     @Secure(Roles.SYSTEM)
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("{name}")
-    boolean runlastGithubAction(@PathParam("name") String name) {
+    boolean runlastGithubAction(String name) {
         githubService.rerunLastGithubAction(name)
     }
 
-    @ApiOperation(value = "Create or update a secret **Secure")
+    @Tag(name = "Repo Operations")
+    @Operation(summary = "Create or update a secret **Secure")
+    @Put(value = "/{name}/secret", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
     @Secure(Roles.SYSTEM)
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("{name}/secret")
-    String setGithubSecret(@PathParam("name") String name, SecretRequest request) {
+    String setGithubSecret(String name, @Body SecretRequest request) {
         githubService.setGithubSecret(name, request.secretName, request.secretValue)
         return name
     }
 
-    @ApiOperation(value = "Get latest release for the current repo")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("{name}/release")
-    String getLatestRelease(@PathParam("name") String name) {
+    @Tag(name = "Repo Operations")
+    @Operation(summary = "Get latest release for the current repo")
+    @Get(value = "/{name}/release", produces = MediaType.APPLICATION_JSON)
+    String getLatestRelease(String name) {
         githubService.getLatestRelease(name)
     }
 
