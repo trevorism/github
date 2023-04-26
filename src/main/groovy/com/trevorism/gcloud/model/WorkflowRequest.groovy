@@ -4,5 +4,5 @@ class WorkflowRequest {
 
     String branchName = "master"
     String yamlName = "deploy.yml"
-    boolean unitTest = false
+    String testType = "acceptance"
 }

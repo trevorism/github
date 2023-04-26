@@ -5,11 +5,11 @@ class GithubWorkflowRequest {
     Inputs inputs
     String ref
 
-    GithubWorkflowRequest(String yamlName, String branchName, boolean unitTests){
+    GithubWorkflowRequest(String yamlName, String branchName, String testType){
         ref = branchName
         inputs = new Inputs()
         if(yamlName.toLowerCase() == "test.yml"){
-            inputs.TEST_TYPE = unitTests ? "unit" : "acceptance"
+            inputs.TEST_TYPE = testType
         }
     }
 

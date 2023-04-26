@@ -1,3 +1,7 @@
+# 0.6.0
+
+Turn test type into a String parameter, upgrade dependencies
+
 # 0.5.0
 
 Migrate to micronaut, java 17 
