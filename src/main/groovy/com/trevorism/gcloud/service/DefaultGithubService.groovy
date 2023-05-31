@@ -106,7 +106,7 @@ class DefaultGithubService implements GithubService {
     String invokeWorkflow(String repoName, WorkflowRequest request) {
         String json = gson.toJson(new GithubWorkflowRequest(request.branchName, request.workflowInputs))
         HeadersHttpResponse response = httpClient.post("${BASE_GITHUB_URL}/repos/trevorism/${repoName}/actions/workflows/${request.yamlName}/dispatches", json, createAuthHeader())
-        return response.value;
+        return response.value
     }
 
     @Override

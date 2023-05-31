@@ -1,7 +1,10 @@
 package com.trevorism.gcloud.model
 
 class WorkflowResponse {
-    private final String statusUrl
+
+    String statusUrl
+
+    WorkflowResponse(){}
 
     WorkflowResponse(String status){
         this.statusUrl = status
