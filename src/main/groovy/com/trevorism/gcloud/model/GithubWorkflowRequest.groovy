@@ -2,19 +2,13 @@ package com.trevorism.gcloud.model
 
 class GithubWorkflowRequest {
 
-    Inputs inputs
+    Map<String,String> inputs
     String ref
 
-    GithubWorkflowRequest(String yamlName, String branchName, String testType){
-        ref = branchName
-        inputs = new Inputs()
-        if(yamlName.toLowerCase() == "test.yml"){
-            inputs.TEST_TYPE = testType
-        }
-    }
 
-    class Inputs {
-        String TEST_TYPE
+    GithubWorkflowRequest(String branchName, Map<String,String> inputs){
+        ref = branchName
+        this.inputs = inputs
     }
 
 }

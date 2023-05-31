@@ -8,7 +8,7 @@ class GithubWorkflowRequestTest {
     @Test
     void testGsonOnConstructor_testYmlUnitTest(){
         Gson gson = new Gson()
-        GithubWorkflowRequest request = new GithubWorkflowRequest("test.yml","master","unit")
+        GithubWorkflowRequest request = new GithubWorkflowRequest("master",["TEST_TYPE":"unit"])
         String json = gson.toJson(request)
         assert "{\"inputs\":{\"TEST_TYPE\":\"unit\"},\"ref\":\"master\"}" == json
     }
@@ -16,15 +16,15 @@ class GithubWorkflowRequestTest {
     @Test
     void testGsonOnConstructor_testYmlAcceptanceTest(){
         Gson gson = new Gson()
-        GithubWorkflowRequest request = new GithubWorkflowRequest("test.yml","master","acceptance")
+        GithubWorkflowRequest request = new GithubWorkflowRequest("master",["TEST_TYPE":"cucumber"])
         String json = gson.toJson(request)
-        assert "{\"inputs\":{\"TEST_TYPE\":\"acceptance\"},\"ref\":\"master\"}" == json
+        assert "{\"inputs\":{\"TEST_TYPE\":\"cucumber\"},\"ref\":\"master\"}" == json
     }
 
     @Test
     void testGsonOnConstructor_deployYml(){
         Gson gson = new Gson()
-        GithubWorkflowRequest request = new GithubWorkflowRequest("deploy.yml","master","cypress")
+        GithubWorkflowRequest request = new GithubWorkflowRequest("master",[:])
         String json = gson.toJson(request)
         assert "{\"inputs\":{},\"ref\":\"master\"}" == json
     }

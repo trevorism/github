@@ -13,8 +13,8 @@ interface GithubService {
 
     String getLatestRelease(String repositoryName)
     boolean rerunLastGithubAction(String repositoryName)
-    void setGithubSecret(String repositoryName, String secretName, String secretValue)
-    void invokeWorkflow(String repositoryName, WorkflowRequest request)
+    boolean setGithubSecret(String repositoryName, String secretName, String secretValue)
+    String invokeWorkflow(String repositoryName, WorkflowRequest request)
 
     WorkflowStatus getWorkflowStatus(String repositoryName, String yamlName)
 }

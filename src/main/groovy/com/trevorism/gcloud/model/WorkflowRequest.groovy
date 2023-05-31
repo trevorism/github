@@ -4,5 +4,5 @@ class WorkflowRequest {
 
     String branchName = "master"
     String yamlName = "deploy.yml"
-    String testType = "acceptance"
+    Map<String, String> workflowInputs = [:]
 }

@@ -3,6 +3,7 @@ package com.trevorism.gcloud.webapi.controller
 import com.trevorism.gcloud.model.Repository
 import com.trevorism.gcloud.model.SecretRequest
 import com.trevorism.gcloud.model.WorkflowRequest
+import com.trevorism.gcloud.model.WorkflowResponse
 import com.trevorism.gcloud.model.WorkflowStatus
 import com.trevorism.gcloud.service.DefaultGithubService
 import com.trevorism.gcloud.service.GithubService
@@ -22,7 +23,7 @@ class RepoController {
     @Tag(name = "Repo Operations")
     @Operation(summary = "Lists all repos **Secure")
     @Get(value = "/", produces = MediaType.APPLICATION_JSON)
-    @Secure(Roles.USER)
+    @Secure(Roles.SYSTEM)
     List<Repository> list() {
         githubService.listRepos()
     }
@@ -38,7 +39,7 @@ class RepoController {
     @Tag(name = "Repo Operations")
     @Operation(summary = "Gets a repository **Secure")
     @Get(value = "/{name}", produces = MediaType.APPLICATION_JSON)
-    @Secure(Roles.USER)
+    @Secure(Roles.SYSTEM)
     Repository getRepository(String name) {
         githubService.getRepo(name)
     }
@@ -55,9 +56,9 @@ class RepoController {
     @Operation(summary = "Invoke github workflow **Secure")
     @Post(value = "/{name}/workflow", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
     @Secure(Roles.SYSTEM)
-    WorkflowRequest invokeWorkflow(String name, @Body WorkflowRequest request) {
+    WorkflowResponse invokeWorkflow(String name, @Body WorkflowRequest request) {
         githubService.invokeWorkflow(name, request)
-        return request
+        return new WorkflowResponse("/${name}/workflow/${request.yamlName}")
     }
 
     @Tag(name = "Repo Operations")
@@ -81,8 +82,13 @@ class RepoController {
     @Put(value = "/{name}/secret", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
     @Secure(Roles.SYSTEM)
     String setGithubSecret(String name, @Body SecretRequest request) {
-        githubService.setGithubSecret(name, request.secretName, request.secretValue)
-        return name
+        boolean result = githubService.setGithubSecret(name, request.secretName, request.secretValue)
+        if(result){
+            return name
+        }
+        else{
+            throw new RuntimeException("Unable to set secret named: ${name}")
+        }
     }
 
     @Tag(name = "Repo Operations")

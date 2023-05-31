@@ -1,7 +1,7 @@
 package com.trevorism.gcloud
 
 import com.google.gson.Gson
-import com.trevorism.https.DefaultSecureHttpClient
+import com.trevorism.https.AppClientSecureHttpClient
 import com.trevorism.https.SecureHttpClient
 
 /**
@@ -14,7 +14,7 @@ this.metaClass.mixin(io.cucumber.groovy.EN)
 def responseObjects
 
 When(/the list of repositories is requested/) {  ->
-    SecureHttpClient secureHttpClient = new DefaultSecureHttpClient()
+    SecureHttpClient secureHttpClient = new AppClientSecureHttpClient()
     String responseJson = secureHttpClient.get("https://github.project.trevorism.com/repo")
     Gson gson = new Gson()
     responseObjects = gson.fromJson(responseJson, List.class)

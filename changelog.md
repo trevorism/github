@@ -1,3 +1,8 @@
+# 0.7.0
+
+Enable workflow dispatch input parameters, changing the API to accept 
+any yaml/workflow input pairs.
+
 # 0.6.0
 
 Turn test type into a String parameter, upgrade dependencies

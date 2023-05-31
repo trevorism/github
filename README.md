@@ -6,7 +6,7 @@
 
 A webapp that wraps the github API. This helps with automated creation and management of github repos
 
-Current version: 0.6.0
+Current version: 0.7.0
 
 Deployed to [Github](http://github.project.trevorism.com)
 

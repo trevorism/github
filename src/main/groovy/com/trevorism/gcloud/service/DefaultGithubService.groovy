@@ -72,7 +72,7 @@ class DefaultGithubService implements GithubService {
     }
 
     @Override
-    void setGithubSecret(String repositoryName, String secretName, String secretValue) {
+    boolean setGithubSecret(String repositoryName, String secretName, String secretValue) {
         HeadersHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}/actions/secrets/public-key", createAuthHeader())
         def responseObject = new JsonSlurper().parseText(response.value)
         String keyId = responseObject["key_id"]
@@ -81,6 +81,7 @@ class DefaultGithubService implements GithubService {
         EncryptedSecret encryptedSecret = new EncryptedSecret(key_id: keyId, encrypted_value: secretEncryptedBin)
         String json = gson.toJson(encryptedSecret)
         httpClient.put("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}/actions/secrets/${secretName}", json, createAuthHeader())
+        return true
     }
 
     private String encryptSecret(String secretValue, String keyString) {
@@ -102,9 +103,10 @@ class DefaultGithubService implements GithubService {
     }
 
     @Override
-    void invokeWorkflow(String repoName, WorkflowRequest request) {
-        String json = gson.toJson(new GithubWorkflowRequest(request.yamlName, request.branchName, request.testType))
+    String invokeWorkflow(String repoName, WorkflowRequest request) {
+        String json = gson.toJson(new GithubWorkflowRequest(request.branchName, request.workflowInputs))
         HeadersHttpResponse response = httpClient.post("${BASE_GITHUB_URL}/repos/trevorism/${repoName}/actions/workflows/${request.yamlName}/dispatches", json, createAuthHeader())
+        return response.value;
     }
 
     @Override
