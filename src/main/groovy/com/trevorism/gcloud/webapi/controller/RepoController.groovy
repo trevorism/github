@@ -55,7 +55,7 @@ class RepoController {
     @Tag(name = "Repo Operations")
     @Operation(summary = "Invoke github workflow **Secure")
     @Post(value = "/{name}/workflow", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-    @Secure(Roles.SYSTEM)
+    @Secure(value = Roles.SYSTEM, allowInternal = true)
     WorkflowResponse invokeWorkflow(String name, @Body WorkflowRequest request) {
         githubService.invokeWorkflow(name, request)
         return new WorkflowResponse("/${name}/workflow/${request.yamlName}")
@@ -64,7 +64,7 @@ class RepoController {
     @Tag(name = "Repo Operations")
     @Operation(summary = "Get github workflow status **Secure")
     @Get(value = "/{name}/workflow/{yaml}", produces = MediaType.APPLICATION_JSON)
-    @Secure(Roles.SYSTEM)
+    @Secure(value = Roles.SYSTEM, allowInternal = true)
     WorkflowStatus getWorkflowStatus(String name, String yaml) {
         githubService.getWorkflowStatus(name, yaml)
     }
