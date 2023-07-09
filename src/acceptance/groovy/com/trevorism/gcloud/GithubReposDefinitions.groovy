@@ -3,13 +3,15 @@ package com.trevorism.gcloud
 import com.google.gson.Gson
 import com.trevorism.https.AppClientSecureHttpClient
 import com.trevorism.https.SecureHttpClient
+import io.cucumber.groovy.EN
+import io.cucumber.groovy.Hooks
 
 /**
  * @author tbrooks
  */
 
-this.metaClass.mixin(io.cucumber.groovy.Hooks)
-this.metaClass.mixin(io.cucumber.groovy.EN)
+this.metaClass.mixin(Hooks)
+this.metaClass.mixin(EN)
 
 def responseObjects
 
