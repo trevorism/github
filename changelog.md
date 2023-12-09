@@ -1,3 +1,7 @@
+# 0.8.0
+
+Update to Micronaut 4, gradle 8.5, and rotate token.
+
 # 0.7.0
 
 Enable workflow dispatch input parameters, changing the API to accept 
