@@ -76,7 +76,7 @@ class DefaultGithubService implements GithubService {
         HeadersHttpResponse response = httpClient.get("${BASE_GITHUB_URL}/repos/trevorism/${repositoryName}/actions/secrets/public-key", createAuthHeader())
         def responseObject = new JsonSlurper().parseText(response.value)
         String keyId = responseObject["key_id"]
-        String secretEncryptedBin = encryptSecret(secretValue, responseObject["key"])
+        String secretEncryptedBin = encryptSecret(secretValue, responseObject["key"].toString())
 
         EncryptedSecret encryptedSecret = new EncryptedSecret(key_id: keyId, encrypted_value: secretEncryptedBin)
         String json = gson.toJson(encryptedSecret)
@@ -84,7 +84,7 @@ class DefaultGithubService implements GithubService {
         return true
     }
 
-    private String encryptSecret(String secretValue, String keyString) {
+    private static String encryptSecret(String secretValue, String keyString) {
         LazySodiumJava lazySodium = new LazySodiumJava(new SodiumJava(), StandardCharsets.UTF_8)
         String hexSecret = lazySodium.cryptoBoxSealEasy(secretValue, Key.fromBytes(Base64.decoder.decode(keyString)))
         def secretByteArray = lazySodium.sodiumHex2Bin(hexSecret)
@@ -119,7 +119,7 @@ class DefaultGithubService implements GithubService {
         }
         def latestRun = sortedRuns.last()
 
-        return new WorkflowStatus(workflowId: latestRun["workflow_id"], runId: latestRun["id"], state: latestRun["status"],
+        return new WorkflowStatus(workflowId: latestRun["workflow_id"] as Long, runId: latestRun["id"] as Long, state: latestRun["status"],
                 result: latestRun["conclusion"], event: latestRun["event"], createdAt: latestRun["created_at"], updatedAt: latestRun["updated_at"])
     }
 

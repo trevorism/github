@@ -93,7 +93,7 @@ class RepoController {
 
     @Tag(name = "Repo Operations")
     @Operation(summary = "Get latest release for the current repo")
-    @Get(value = "/{name}/release", produces = MediaType.APPLICATION_JSON)
+    @Get(value = "/{name}/release", produces = MediaType.TEXT_PLAIN)
     String getLatestRelease(String name) {
         githubService.getLatestRelease(name)
     }

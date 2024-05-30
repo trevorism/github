@@ -1,3 +1,7 @@
+# 0.9.0
+
+Add test and deploy events. Update dependencies.
+
 # 0.8.0
 
 Update to Micronaut 4, gradle 8.5, and rotate token.
