@@ -17,7 +17,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.8.0'
-        classpath 'com.trevorism:gradle-acceptance-plugin:2.6.0'
+        classpath 'com.trevorism:gradle-acceptance-plugin:2.7.2'
     }
 }
 
@@ -56,10 +56,7 @@ dependencies {
 
     runtimeOnly("ch.qos.logback:logback-classic")
 
-    implementation ('com.trevorism:micronaut-utility-beans:1.3.0'){
-        exclude module:"slf4j-nop"
-        exclude module:"slf4j-simple"
-    }
+    implementation ('com.trevorism:micronaut-utility-beans:1.4.0')
     implementation 'com.google.code.gson:gson:2.11.0'
     implementation 'net.java.dev.jna:jna:5.14.0'
     implementation 'com.goterl:lazysodium-java:5.1.4'
@@ -93,7 +90,7 @@ appengine {
     stage.artifact = layout.buildDirectory.file("libs/${project.name}-all.jar")
     deploy {
         projectId = "trevorism-project"
-        version = "0-9-0"
+        version = "0-9-1"
         stopPreviousVersion = true
         promote = true
     }

@@ -1,3 +1,7 @@
+# 0.9.1
+
+Rotate github PAT.
+
 # 0.9.0
 
 Add test and deploy events. Update dependencies.
