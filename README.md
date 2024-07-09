@@ -6,8 +6,6 @@
 
 A webapp that wraps the github API. This helps with automated creation and management of github repos
 
-Current version: 0.9.1
-
 Deployed to [Github](http://github.project.trevorism.com)
 
 Uses a personal access token to authenticate. Create a property in secrets.properties

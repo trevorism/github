@@ -5,7 +5,6 @@ import com.trevorism.gcloud.model.SecretRequest
 import com.trevorism.gcloud.model.WorkflowRequest
 import com.trevorism.gcloud.model.WorkflowResponse
 import com.trevorism.gcloud.model.WorkflowStatus
-import com.trevorism.gcloud.service.DefaultGithubService
 import com.trevorism.gcloud.service.GithubService
 import com.trevorism.secure.Roles
 import com.trevorism.secure.Secure
@@ -14,11 +13,13 @@ import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.*
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.inject.Inject
 
 @Controller("/repo")
 class RepoController {
 
-    private GithubService githubService = new DefaultGithubService()
+    @Inject
+    private GithubService githubService
 
     @Tag(name = "Repo Operations")
     @Operation(summary = "Lists all repos **Secure")

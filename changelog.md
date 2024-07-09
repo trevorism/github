@@ -1,3 +1,7 @@
+# 0.9.2
+
+Update dependencies.
+
 # 0.9.1
 
 Rotate github PAT.

@@ -16,16 +16,20 @@ import com.trevorism.http.HeadersHttpResponse
 import com.trevorism.http.HttpClient
 import com.trevorism.http.JsonHttpClient
 import groovy.json.JsonSlurper
+import jakarta.inject.Inject
 
 import java.lang.reflect.Type
 import java.nio.charset.StandardCharsets
 
+@jakarta.inject.Singleton
 class DefaultGithubService implements GithubService {
 
     private static final String BASE_GITHUB_URL = "https://api.github.com"
     private HttpClient httpClient = new JsonHttpClient()
     private Gson gson = new Gson()
-    private PropertiesProvider propertiesProvider = new ClasspathBasedPropertiesProvider()
+
+    @Inject
+    private PropertiesProvider propertiesProvider
 
     @Override
     List<Repository> listRepos() {
