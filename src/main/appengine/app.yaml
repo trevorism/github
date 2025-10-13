@@ -1,4 +1,4 @@
-runtime: java17
+runtime: java21
 service: github
 entrypoint: java -jar github-all.jar
 handlers:

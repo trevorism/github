@@ -16,15 +16,15 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.8.0'
-        classpath 'com.trevorism:gradle-acceptance-plugin:2.7.2'
+        classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.8.3'
+        classpath 'com.trevorism:gradle-acceptance-plugin:2.8.2'
     }
 }
 
 plugins {
     id "groovy"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "4.3.8"
+    id("com.gradleup.shadow") version "8.3.8"
+    id("io.micronaut.application") version "4.5.4"
     id "jacoco"
 }
 
@@ -66,7 +66,7 @@ dependencies {
 
     testImplementation 'com.trevorism:test-result-events:0.3.0'
     acceptanceImplementation 'io.cucumber:cucumber-groovy:6.10.4'
-    acceptanceImplementation "ch.qos.logback:logback-classic:1.5.6"
+    acceptanceImplementation "ch.qos.logback:logback-classic:1.5.19"
 }
 
 application {
@@ -92,7 +92,7 @@ appengine {
     stage.artifact = layout.buildDirectory.file("libs/${project.name}-all.jar")
     deploy {
         projectId = "trevorism-project"
-        version = "0-9-2"
+        version = "0-9-3"
         stopPreviousVersion = true
         promote = true
     }
