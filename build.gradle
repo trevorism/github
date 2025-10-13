@@ -58,7 +58,7 @@ dependencies {
 
     runtimeOnly("ch.qos.logback:logback-classic")
 
-    implementation 'com.trevorism:micronaut-utility-beans:1.7.1'
+    implementation 'com.trevorism:micronaut-utility-beans:1.7.2'
     implementation 'com.google.code.gson:gson:2.11.0'
     implementation 'net.java.dev.jna:jna:5.14.0'
     implementation 'com.goterl:lazysodium-java:5.1.4'
