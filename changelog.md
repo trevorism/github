@@ -1,3 +1,7 @@
+# 0.10.0
+
+Upgrade to Micronaut 5.0.0, Java 25, Gradle 9.5.1, and updated dependencies.
+
 # 0.9.3
 
 Update dependencies.
@@ -55,6 +59,3 @@ Updated dependencies to latest and improved documentation and testing.
 # 0.1.0
 
 Initial release with create/get/list/delete REST API for github repositories.
-
-
-
