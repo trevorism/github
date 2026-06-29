@@ -19,4 +19,10 @@ class RootControllerTest {
         RootController rootController = new RootController()
         assert rootController.ping() == "pong"
     }
+
+    @Test
+    void testVersionEndpoint() {
+        RootController rootController = new RootController()
+        assert rootController.version() == "1-0-0"
+    }
 }

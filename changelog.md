@@ -1,3 +1,7 @@
+# 1.0.0
+
+Update dependencies and access token.
+
 # 0.10.0
 
 Upgrade to Micronaut 5.0.0, Java 25, Gradle 9.5.1, and updated dependencies.
