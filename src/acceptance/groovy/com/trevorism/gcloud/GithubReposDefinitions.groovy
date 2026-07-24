@@ -13,11 +13,13 @@ import io.cucumber.groovy.Hooks
 this.metaClass.mixin(Hooks)
 this.metaClass.mixin(EN)
 
+String baseUrl = System.getenv("ACCEPTANCE_BASE_URL") ?: "https://github.project.trevorism.com"
+
 def responseObjects
 
 When(/the list of repositories is requested/) {  ->
     SecureHttpClient secureHttpClient = new AppClientSecureHttpClient()
-    String responseJson = secureHttpClient.get("https://github.project.trevorism.com/repo")
+    String responseJson = secureHttpClient.get("${baseUrl}/repo")
     Gson gson = new Gson()
     responseObjects = gson.fromJson(responseJson, List.class)
 }
