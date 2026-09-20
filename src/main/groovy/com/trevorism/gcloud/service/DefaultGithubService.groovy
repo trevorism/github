@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken
 import com.goterl.lazysodium.LazySodiumJava
 import com.goterl.lazysodium.SodiumJava
 import com.goterl.lazysodium.utils.Key
-import com.trevorism.ClasspathBasedPropertiesProvider
 import com.trevorism.PropertiesProvider
 import com.trevorism.gcloud.model.EncryptedSecret
 import com.trevorism.gcloud.model.GithubWorkflowRequest

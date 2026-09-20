@@ -1,5 +1,6 @@
 package com.trevorism.gcloud.webapi.controller
 
+import com.trevorism.AppVersion
 import org.junit.jupiter.api.Test
 
 /**
@@ -23,6 +24,6 @@ class RootControllerTest {
     @Test
     void testVersionEndpoint() {
         RootController rootController = new RootController()
-        assert rootController.version() == "1-0-0"
+        assert rootController.version() == AppVersion.SEMVER
     }
 }
